@@ -1,3 +1,9 @@
+def init():
+    pass
+
+def deinit():
+    pass
+
 def main():
     print("Hello from chip-8!")
 

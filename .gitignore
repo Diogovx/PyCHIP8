@@ -8,3 +8,5 @@ wheels/
 
 # Virtual environments
 .venv
+
+chip8-roms/

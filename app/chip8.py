@@ -85,7 +85,7 @@ class CHIP8():
             case 0x1:
                 self.program_counter.value = self.opcode.value & 0x0FFF
             case 0x2:
-                self.stack[self.sp] = self.program_counter.value
+                self.stack[self.sp.value] = self.program_counter.value
                 self.sp.value += 1
                 self.program_counter.value = self.opcode.value & 0x0FFF
             case 0x3:
@@ -134,23 +134,19 @@ class CHIP8():
                     case 3:
                         self.registers[x] ^= self.registers[y]
                     case 4:
-                        #setRunTimeSafety(false)
                         sum_val = self.registers[x] + self.registers[y]
                         
                         self.registers[0xF] = 1 if sum_val > 255 else 0
-                        #self.registers[x] = @truncate(u8, sum & 0x00FF)
                         self.registers[x] = sum_val & 0x00FF
                     case 5:
-                        #setRunTimeSafety(false)
                         self.registers[0xF] = 1 if self.registers[x] > self.registers[y] else 0
-                        self.registers[x] -= self.registers[y]
+                        self.registers[x] = (self.registers[x] - self.registers[y]) & 0xFF
                     case 6:
                         self.registers[0xF] = self.registers[x] & 1
                         self.registers[x] >>= 1
                     case 7:
-                        #setRunTimeSafety(false)
                         self.registers[0xF] = 1 if self.registers[y] > self.registers[x] else 0
-                        self.registers[x] = self.registers[y] - self.registers[x]
+                        self.registers[x] = (self.registers[y] - self.registers[x]) & 0xFF
                     case 14:
                         self.registers[0xF] = 1 if self.registers[x] & 0x80 != 0 else 0
                         self.registers[x] = (self.registers[x] << 1) & 0xFF
@@ -169,7 +165,7 @@ class CHIP8():
                 self.index.value = self.opcode.value & 0x0FFF
                 self.increment_pc()
             case 0xB:
-                self.program_counter = (self.opcode.value & 0x0FFF) + self.registers[0]
+                self.program_counter.value = (self.opcode.value & 0x0FFF) + self.registers[0]
             case 0xC:
                 x = (self.opcode.value & 0x0F00) >> 8
                 kk = self.opcode.value & 0x00FF
@@ -223,7 +219,7 @@ class CHIP8():
                 kk = self.opcode.value & 0x00FF
                 
                 if kk == 0x07:
-                    self.registers[x] == self.delay_timer.value
+                    self.registers[x] = self.delay_timer.value
                 elif kk == 0x0A:
                     key_pressed = False
                     
@@ -260,3 +256,7 @@ class CHIP8():
                     
                 
                 self.increment_pc()
+        if self.delay_timer.value > 0:
+            self.delay_timer.value -= 1
+        if self.sound_timer.value > 0:
+            self.sound_timer.value -= 1

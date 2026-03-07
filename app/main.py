@@ -1,16 +1,18 @@
 import sdl2.ext
 from time import sleep
+from app.chip8 import CHIP8
 
 window: sdl2.SDL_Window = None
 renderer: sdl2.SDL_Renderer = None
 texture: sdl2.SDL_Texture = None
 
+cpu = None
 
 def init():
     if sdl2.ext.init():
         raise "SDL Initialization Failed!"
     
-    window = sdl2.SDL_CreateWindow("CHIP8", sdl2.SDL_WINDOWPOS_CENTERED, sdl2.SDL_WINDOWPOS_CENTERED, 1024, 512, 0)
+    window = sdl2.SDL_CreateWindow(b"CHIP8", sdl2.SDL_WINDOWPOS_CENTERED, sdl2.SDL_WINDOWPOS_CENTERED, 1024, 512, 0)
     if not window:
         raise "Window Creation Failed!"
     
@@ -34,14 +36,20 @@ def main():
     finally:
         deinit()
     
+    cpu = CHIP8()
+    cpu.init()
+    
+    #TODO Load a ROM
+    
     keep_open = True
     while keep_open:
-        #TODO Emulator Cycle
+        cpu.cycle()
         e: sdl2.SDL_Event = None
         while sdl2.SDL_PollEvent(e) > 0:
             match type(e):
                 case sdl2.SDL_QUIT:
                     keep_open = False
+                    #TODO Key presses
         
         _ = sdl2.SDL_RenderClear(renderer)
         

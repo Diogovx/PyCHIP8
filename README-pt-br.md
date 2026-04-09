@@ -60,7 +60,7 @@ O projeto foi criado principalmente para fins de aprendizado, explorando como os
 
 ## Captura de tela
 
-[Captura de tela do CHIP8](./assets/Screenshot_3.png)
+![Captura de tela do CHIP8](./assets/Screenshot_3.png)
 
 ## Próximos passos
 

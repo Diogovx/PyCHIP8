@@ -58,7 +58,7 @@ The project was created mainly for learning purposes, exploring how emulators wo
 
 ## Screenshot
 
-[CHIP8 screensjot](./assets/Screenshot_3.png)
+![CHIP8 screensjot](./assets/Screenshot_3.png)
 
 ## Next Steps
 
